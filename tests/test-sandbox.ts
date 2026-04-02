@@ -1,8 +1,18 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page, Locator } from '@playwright/test';
 
-const elements = [
+interface Elements {
+  locator: (page: Page) => Locator;
+  name?: string;
+  text?: string;
+  attribute?: {
+    type: string;
+    value: string;
+  };
+}
+const elements: Elements[] = [
   {
-    locator: (page: Page) => page.getByRole('link', { name: 'Playwright logo Playwright' }),
+    locator: (page: Page): Locator =>
+      page.getByRole('link', { name: 'Playwright logo Playwright' }),
     name: 'Playwright logo Playwright',
     text: 'Playwright',
     attribute: {
@@ -11,15 +21,16 @@ const elements = [
     },
   },
   {
-    locator: (page: Page) => page.getByRole('link', { name: 'GitHub repository' }),
+    locator: (page: Page): Locator => page.getByRole('link', { name: 'GitHub repository' }),
     name: 'GitHub repository',
   },
   {
-    locator: (page: Page) => page.getByRole('link', { name: 'Discord server' }),
+    locator: (page: Page): Locator => page.getByRole('link', { name: 'Discord server' }),
     name: 'Discord server',
   },
   {
-    locator: (page: Page) => page.getByRole('button', { name: 'Switch between dark and light' }),
+    locator: (page: Page): Locator =>
+      page.getByRole('button', { name: 'Switch between dark and light' }),
     name: 'Switch between dark and light',
   },
 ];
