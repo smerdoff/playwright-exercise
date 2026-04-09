@@ -1,6 +1,8 @@
 import { test, expect, Locator, Page } from '@playwright/test';
+import { BasePage } from '../pages/BasePage';
+import { URLs } from '../config/urls';
 
-interface Elements {
+interface NavigationElements {
   locator: (page: Page) => Locator;
   name?: string;
   text?: string;
@@ -10,12 +12,11 @@ interface Elements {
   };
 }
 
-export class MainPage {
-  readonly page: Page;
-  readonly elements: Elements[];
+export class MainPage extends BasePage {
+  readonly elements: NavigationElements[];
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.elements = [
       {
         locator: (page: Page): Locator =>
@@ -100,12 +101,14 @@ export class MainPage {
       },
     ];
   }
-  async openMainPage() {
-    await this.page.goto('https://automationexercise.com/');
+
+  async navigate() {
+    await super.navigate(URLs.main);
   }
+
   async checkElementsVisability() {
     for (const { locator, name } of this.elements) {
-      test.step(`Check ${name} element to visability`, async () => {
+      await test.step(`Check ${name} element to visability`, async () => {
         await expect.soft(locator(this.page)).toBeVisible();
       });
     }
@@ -113,7 +116,7 @@ export class MainPage {
   async checkElementsText() {
     for (const { locator, name, text } of this.elements) {
       if (text) {
-        test.step(`Check text of the ${name} tab`, async () => {
+        await test.step(`Check text of the ${name} tab`, async () => {
           await expect(locator(this.page)).toContainText(text);
         });
       }
@@ -122,7 +125,7 @@ export class MainPage {
   async checkElementsHrefAttribute() {
     for (const { locator, name, attribute } of this.elements) {
       if (attribute) {
-        test.step(`Check href of the ${name} tab`, async () => {
+        await test.step(`Check href of the ${name} tab`, async () => {
           await expect(locator(this.page)).toHaveAttribute(attribute.type, attribute.value);
         });
       }
