@@ -1,5 +1,5 @@
 import { test, expect, Locator, Page } from '@playwright/test';
-import { BasePage } from '../pages/BasePage';
+import { BasePage } from './BasePage';
 import { URLs } from '../config/urls';
 
 interface NavigationElements {
@@ -12,11 +12,13 @@ interface NavigationElements {
   };
 }
 
-export class MainPage extends BasePage {
+export class Header extends BasePage {
+  readonly cartTab;
   readonly elements: NavigationElements[];
 
   constructor(page: Page) {
     super(page);
+    this.cartTab = page.locator('.shop-menu a[href="/view_cart"]');
     this.elements = [
       {
         locator: (page: Page): Locator =>
@@ -113,6 +115,7 @@ export class MainPage extends BasePage {
       });
     }
   }
+
   async checkElementsText() {
     for (const { locator, name, text } of this.elements) {
       if (text) {
@@ -122,6 +125,7 @@ export class MainPage extends BasePage {
       }
     }
   }
+
   async checkElementsHrefAttribute() {
     for (const { locator, name, attribute } of this.elements) {
       if (attribute) {
@@ -130,5 +134,9 @@ export class MainPage extends BasePage {
         });
       }
     }
+  }
+
+  async goToCart() {
+    await this.cartTab.click();
   }
 }
