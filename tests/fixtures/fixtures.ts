@@ -2,11 +2,13 @@ import { test as base, Page } from '@playwright/test';
 import { Header } from '../pages/Header';
 import { ProductsOperations } from '../services/ProductsOperations';
 import { CartOperations } from '../services/CartOperations';
+import { SupportOperations } from '../services/SupportOperations';
 
 type MyFixtures = {
   mainPage: Header;
   productsPage: ProductsOperations;
   cartPage: CartOperations;
+  supportPage: SupportOperations;
 };
 
 export const test = base.extend<MyFixtures>({
@@ -26,6 +28,12 @@ export const test = base.extend<MyFixtures>({
   cartPage: async ({ page }, use) => {
     const cartPage = new CartOperations(page);
     await use(cartPage);
+  },
+
+  supportPage: async ({ page }, use) => {
+    const supportPage = new SupportOperations(page);
+    await supportPage.navigateAndClosePrivacy();
+    await use(supportPage);
   },
 });
 
