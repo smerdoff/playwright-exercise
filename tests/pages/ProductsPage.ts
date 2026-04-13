@@ -7,6 +7,7 @@ export class ProductsPage extends BasePage {
   readonly searchInput;
   readonly searchButton;
   readonly productNames;
+  readonly addToCartButton;
   readonly continueShoppingButton;
   readonly header: Header;
 
@@ -16,6 +17,7 @@ export class ProductsPage extends BasePage {
     this.searchInput = page.getByRole('textbox', { name: 'Search Product' });
     this.searchButton = page.locator('#submit_search');
     this.productNames = page.locator('.productinfo p');
+    this.addToCartButton = page.locator('.add-to-cart');
     this.continueShoppingButton = page.getByRole('button', { name: 'Continue Shopping' });
   }
 
@@ -52,7 +54,7 @@ export class ProductsPage extends BasePage {
     await this.page
       .locator('.productinfo')
       .filter({ hasText: productName })
-      .locator('.add-to-cart')
+      .locator(this.addToCartButton)
       .click();
   }
 

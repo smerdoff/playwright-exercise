@@ -1,5 +1,5 @@
 import { CartPage } from '../pages/CartPage';
-import { expect, Page } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
 export class CartOperations {
   private cartPage: CartPage;
@@ -9,7 +9,9 @@ export class CartOperations {
   }
 
   async validateCartItemsCount(expectedCount: number) {
-    const actualCount = await this.cartPage.getCartItemsCount();
-    expect(actualCount).toBe(expectedCount);
+    await test.step('Validate count of products in the Cart', async () => {
+      const actualCount = await this.cartPage.getCartItemsCount();
+      expect(actualCount).toBe(expectedCount);
+    });
   }
 }
